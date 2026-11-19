@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "K. Hari Shankar | 3D Environment Artist & VR Developer",
+  title: "K. Hari Shankar | AI, VR & Spatial Computing",
   description:
-    "Portfolio of K. Hari Shankar, a Computer Science undergraduate focused on 3D environments, immersive VR experiences, Unity development, and AI-driven projects.",
+    "Portfolio of K. Hari Shankar, a Computer Science undergraduate exploring machine learning, research, quantum computing, immersive technologies, and 3D engineering visualisation.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
