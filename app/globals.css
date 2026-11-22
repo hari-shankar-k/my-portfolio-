@@ -398,7 +398,7 @@ a {
 
 .profile-portrait-image {
   object-fit: cover;
-  object-position: center 56%;
+  object-position: center 38%;
 }
 
 .profile-corner {
@@ -464,11 +464,54 @@ a {
   font-weight: 610;
 }
 
-.profile-introduction {
+.profile-biography {
   max-width: 680px;
+  display: grid;
+  gap: 16px;
+}
+
+.profile-introduction {
+  margin: 0;
   color: #aab5ba;
   font-size: 15px;
   line-height: 1.8;
+}
+
+.profile-aurora {
+  max-width: 680px;
+  margin: 28px 0 0;
+  color: #9ce8dc;
+  background-image: linear-gradient(
+    112deg,
+    #76dcff 0%,
+    #55e5d0 22%,
+    #60e7a5 44%,
+    #91f0ca 58%,
+    #ad9bff 74%,
+    #65d8f4 88%,
+    #76dcff 100%
+  );
+  background-size: 240% 100%;
+  background-position: 0% 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 22px rgba(77, 226, 204, 0.16), 0 0 42px rgba(84, 122, 255, 0.1);
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 540;
+  line-height: 1.65;
+  text-wrap: pretty;
+  animation: aurora-flow 22s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-flow {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
 }
 
 .profile-highlights {

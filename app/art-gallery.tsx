@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Maximize2, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const galleryProjects = [
   {
@@ -142,8 +143,44 @@ const galleryProjects = [
   },
 ];
 
+const userTestingImages = [
+  {
+    src: "/imaages/quantum/test1.jpeg",
+    title: "User testing session / 01",
+    alt: "Photograph documenting quantum-computer VR prototype testing, session 01",
+  },
+  {
+    src: "/imaages/quantum/test2.jpeg",
+    title: "User testing session / 02",
+    alt: "Photograph documenting quantum-computer VR prototype testing, session 02",
+  },
+  {
+    src: "/imaages/quantum/test%203.jpeg",
+    title: "User testing session / 03",
+    alt: "Photograph documenting quantum-computer VR prototype testing, session 03",
+  },
+  {
+    src: "/imaages/quantum/test4.jpeg",
+    title: "User testing session / 04",
+    alt: "Photograph documenting quantum-computer VR prototype testing, session 04",
+  },
+  {
+    src: "/imaages/quantum/test5.jpeg",
+    title: "User testing session / 05",
+    alt: "Photograph documenting quantum-computer VR prototype testing, session 05",
+  },
+];
+
 const allImages = galleryProjects.flatMap((project) =>
-  project.images.map((image) => ({ ...image, category: project.title })),
+  [
+    ...project.images.map((image) => ({ ...image, category: project.title })),
+    ...(project.title === "Quantum Computing"
+      ? userTestingImages.map((image) => ({
+          ...image,
+          category: "User Testing & Evaluation",
+        }))
+      : []),
+  ],
 );
 
 function GalleryImage({
@@ -259,7 +296,7 @@ export default function ArtGallery() {
       <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl space-y-4">
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
-            3D art gallery · 18 original images
+            3D art gallery · 18 project images + 5 evaluation photographs
           </p>
           <h2
             id="gallery-title"
@@ -370,80 +407,147 @@ export default function ArtGallery() {
                     </button>
                   </div>
                 ) : null}
+
+                {project.title === "Quantum Computing" ? (
+                  <section
+                    className="mt-10 border-t border-cyan-300/15 pt-8"
+                    aria-labelledby="user-testing-title"
+                  >
+                    <div className="mb-6 max-w-3xl">
+                      <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-cyan-200/75">
+                        Field documentation / Research process
+                      </p>
+                      <h4
+                        id="user-testing-title"
+                        className="mb-3 text-xl font-medium text-white sm:text-2xl"
+                      >
+                        User Testing &amp; Evaluation
+                      </h4>
+                      <p className="text-sm leading-7 text-zinc-300 sm:text-base">
+                        Beyond developing the interactive VR environment, the
+                        project also involved exploring how users interact with
+                        and understand quantum computing hardware through
+                        immersive experiences. These photographs document the
+                        prototype testing and user evaluation sessions.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 xl:grid-cols-3">
+                      {userTestingImages.map((image, imageIndex) => (
+                        <button
+                          key={image.src}
+                          type="button"
+                          onClick={() => openImage(image.src)}
+                          aria-label={`Open ${image.title}`}
+                          className="group overflow-hidden rounded-xl border border-cyan-200/15 bg-[#090d10] text-left transition hover:border-cyan-200/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+                        >
+                          <span className="relative block aspect-[4/3] overflow-hidden bg-[#050709]">
+                            <GalleryImage
+                              src={image.src}
+                              alt={image.alt}
+                              sizes="(max-width: 479px) 100vw, (max-width: 1279px) 50vw, 33vw"
+                            />
+                            <span className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent transition-colors group-hover:from-black/10" />
+                          </span>
+                          <span className="flex items-center justify-between gap-3 px-4 py-3">
+                            <span className="text-xs font-medium text-zinc-200">
+                              {image.title}
+                            </span>
+                            <span className="shrink-0 font-mono text-[10px] tracking-[0.12em] text-cyan-200/70">
+                              {String(imageIndex + 1).padStart(2, "0")} / 05
+                            </span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
               </div>
             </article>
           );
         })}
       </div>
 
-      {activeImage && activeIndex !== null ? (
-        <div
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeImage.category}: ${activeImage.title}`}
-          className="fixed inset-0 z-[100] flex flex-col bg-[#050505]/[0.97] p-4 backdrop-blur-xl sm:p-6"
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setActiveIndex(null);
-          }}
-        >
-          <div className="flex items-center justify-between gap-4">
-            <div className="min-w-0">
-              <p className="truncate text-[10px] uppercase tracking-[0.2em] text-emerald-300">
-                {activeImage.category}
-              </p>
-              <p className="mt-1 truncate text-sm font-medium text-white sm:text-base">
-                {activeImage.title}
-              </p>
+      <AnimatePresence>
+        {activeImage && activeIndex !== null ? (
+          <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activeImage.category}: ${activeImage.title}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed inset-0 z-[100] flex flex-col bg-[#050505]/[0.97] p-4 backdrop-blur-xl sm:p-6"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) setActiveIndex(null);
+            }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="truncate text-[10px] uppercase tracking-[0.2em] text-emerald-300">
+                  {activeImage.category}
+                </p>
+                <p className="mt-1 truncate text-sm font-medium text-white sm:text-base">
+                  {activeImage.title}
+                </p>
+              </div>
+              <button
+                ref={closeButtonRef}
+                type="button"
+                onClick={() => setActiveIndex(null)}
+                aria-label="Close image viewer"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={() => setActiveIndex(null)}
-              aria-label="Close image viewer"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
 
-          <div className="relative my-4 min-h-0 flex-1">
-            <Image
-              key={activeImage.src}
-              src={activeImage.src}
-              alt={activeImage.alt}
-              fill
-              sizes="100vw"
-              priority
-              className="object-contain"
-            />
-            <button
-              type="button"
-              onClick={showPreviousImage}
-              aria-label="Previous image"
-              className="absolute left-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 sm:left-4 sm:h-12 sm:w-12"
+            <motion.div
+              className="relative my-4 min-h-0 flex-1"
+              initial={{ scale: 0.985 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.985 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={showNextImage}
-              aria-label="Next image"
-              className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 sm:right-4 sm:h-12 sm:w-12"
-            >
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
+              <Image
+                key={activeImage.src}
+                src={activeImage.src}
+                alt={activeImage.alt}
+                fill
+                sizes="100vw"
+                priority
+                className="object-contain"
+              />
+              <button
+                type="button"
+                onClick={showPreviousImage}
+                aria-label="Previous image"
+                className="absolute left-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 sm:left-4 sm:h-12 sm:w-12"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={showNextImage}
+                aria-label="Next image"
+                className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 sm:right-4 sm:h-12 sm:w-12"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </motion.div>
 
-          <div className="flex items-center justify-between gap-4 text-xs text-zinc-400">
-            <span className="truncate">{activeImage.alt}</span>
-            <span className="shrink-0 font-mono tabular-nums">
-              {String(activeIndex + 1).padStart(2, "0")} /{" "}
-              {String(allImages.length).padStart(2, "0")}
-            </span>
-          </div>
-        </div>
-      ) : null}
+            <div className="flex items-center justify-between gap-4 text-xs text-zinc-400">
+              <span className="truncate">{activeImage.alt}</span>
+              <span className="shrink-0 font-mono tabular-nums">
+                {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                {String(allImages.length).padStart(2, "0")}
+              </span>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }

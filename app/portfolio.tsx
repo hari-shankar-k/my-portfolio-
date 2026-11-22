@@ -291,8 +291,8 @@ export default function Home({ hasResume }: { hasResume: boolean }) {
           <div className="profile-layout">
             <figure className="profile-portrait">
               <Image
-                src="/imaages/hari-profile.jpg.jpeg"
-                alt="Hari Shankar outdoors at sunset"
+                src="/images/quantum/portfolio%20pic.jpeg"
+                alt="Portrait of Hari Shankar"
                 fill
                 sizes="(max-width: 560px) min(100vw - 36px, 400px), 43vw"
                 unoptimized
@@ -310,13 +310,42 @@ export default function Home({ hasResume }: { hasResume: boolean }) {
             <div className="profile-content">
               <p className="eyebrow">01 / About</p>
               <h2>Engineering understanding through computation and spatial design.</h2>
-              <p className="profile-introduction">
-                I am a Computer Science undergraduate interested in game development,
-                interactive systems, artificial intelligence, and immersive technologies.
-                I enjoy building interactive experiences, exploring game mechanics and
-                simulations, and applying machine learning to real-world problems. My work
-                spans Unity development, 3D modelling, virtual reality, deep learning, and
-                computational research.
+              <div className="profile-biography">
+                <p className="profile-introduction">
+                  I believe the best way to understand the world is to explore it,
+                  experiment with it, and sometimes build something entirely new.
+                </p>
+                <p className="profile-introduction">
+                  I&apos;m a Computer Science undergraduate driven by curiosity and an endless
+                  fascination with how things work. Whether it&apos;s exploring artificial
+                  intelligence, building immersive virtual worlds, experimenting with game
+                  mechanics, or diving into the science behind emerging technologies, I
+                  love stepping outside what I already know.
+                </p>
+                <p className="profile-introduction">
+                  I see technology as more than a collection of tools. To me, it&apos;s a
+                  creative medium. Artificial intelligence, much like painting, music, or
+                  dance, is another form of expression. Behind every meaningful creation
+                  lies curiosity, imagination, experimentation, and countless hours of
+                  effort.
+                </p>
+                <p className="profile-introduction">
+                  I&apos;m someone who learns by doing. I can read about how something works,
+                  but I&apos;d much rather build it, break it, experiment with it, and understand
+                  what&apos;s happening beneath the surface. For me, learning isn&apos;t just about
+                  knowing the answer; it&apos;s about experiencing the process of discovering
+                  it.
+                </p>
+                <p className="profile-introduction">
+                  I&apos;m constantly exploring new ideas, connecting seemingly unrelated
+                  fields, and turning curiosity into things I can actually build. Because I
+                  believe there&apos;s always something new to discover, and I&apos;d rather
+                  experience that journey than simply read about it.
+                </p>
+              </div>
+              <p className="profile-aurora">
+                I don&apos;t just want to know what&apos;s possible. I want to explore it, experience
+                it, and see how far I can take it.
               </p>
               <dl className="profile-highlights">
                 <div>
